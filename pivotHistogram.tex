@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+\begin{axis}[
+    ymin=0, ymax=80,
+    minor y tick num = 3,
+    area style,
+    ]
+\addplot+[ybar interval,mark=no] plot coordinates { 
+(000, 74) 
+(050, 15) 
+(100, 3) 
+(150, 3) 
+(200, 4) 
+(250, 5) 
+(300, 1) 
+(350, 4) 
+(400, 1)
+(450, 0)
+(500, 2)
+(550, 0)
+(600, 0)
+(650, 1)
+(700, 0)};
+
+\end{axis}
+\end{tikzpicture}
