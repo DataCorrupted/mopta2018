@@ -1,0 +1,418 @@
+% Include packages
+\usepackage{ marginnote}
+\usepackage[normalem]{ulem}
+
+
+\usepackage{amsmath,amsfonts,amssymb,latexsym,amsthm,
+                         graphicx,graphics,float,subfigure,epsf,enumerate,hyperref,algorithm,algorithmic,multirow,framed}
+  
+% THEOREM Environments ---------------------------------------------------
+%\newtheorem{theorem}{Theorem}[section]
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{assumption}[theorem]{Assumption}
+ \newtheorem{proposition}[theorem]{Proposition}
+ \newtheorem{statement}[theorem]{Statement}
+ \newtheorem{conjecture}[theorem]{Conjecture}
+ %\theoremstyle{definition}
+ %\newtheorem{definition}[theorem]{Definition}
+ \theoremstyle{remark}
+ \newtheorem{remark}[theorem]{Remark}
+ \numberwithin{equation}{section}
+
+
+
+% Set math commands
+\newcommand{\conv}    {{\rm{conv}}}
+\newcommand{\cl}      {{\rm{cl}}}
+\newcommand{\deq}     {\,{\buildrel d \over =}\,}
+\newcommand{\dom}      {{\rm{dom}}}
+\newcommand{\epi}      {{\rm{epi}}}
+\newcommand{\inv}     {^{-1}}
+\newcommand{\interior}{{\rm{int}}}
+\newcommand{\nab}  [2]{\nabla_{\!#1}^{#2}}
+\newcommand{\prob} [1]{P\{#1\}}
+\newcommand{\pto}     {\,{\buildrel p \over \to}\,}
+\newcommand{\R}    [1]{\mathbb{R}^{#1}}
+\newcommand{\st}      {{\rm{s.t.}}}
+%\newcommand{\thalf}[1]{\textstyle{\frac{#1}{2}}}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\thalf}{\tfrac{1}{2}}
+\newcommand{\tr}      {\text{tr}}
+\newcommand{\minimize}{\text{minimize}}
+\newcommand{\subjectto}{\text{subject to}}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\eps}{\epsilon}
+% Set redefined commands
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\sign}{{\rm{sign}}}
+\renewcommand{\mid}{{\rm{mid}}}
+
+\newcommand{\norm}[1]{\left\Vert #1\right\Vert}
+\newcommand{\onorm}[1]{\norm{#1}_1}
+\newcommand{\tnorm}[1]{\norm{#1}_2}
+\newcommand{\inorm}[1]{\norm{#1}_\infty}
+\newcommand{\tnorms}[1]{\norm{#1}_2^2}
+\newcommand{\set}[2]{\left\{#1\,\left|\, #2\right.\right\}}
+\newcommand{\ncone}[2]{N\left(#1\, |\, #2\right)}
+\newcommand{\tdist}[2]{\mbox{dist}_2\left(#1\,\left|\, #2\right.\right)}
+\newcommand{\odist}[2]{\mbox{dist}_1\left(#1\,\left|\, #2\right.\right)}
+
+
+% Set software
+\newcommand{\ampl}   {{\tt AMPL}}
+\newcommand{\ipopt}  {{\tt IPOPT}}
+\newcommand{\knitro} {{\tt KNITRO}}
+\newcommand{\matlab} {{\tt MATLAB}}
+\newcommand{\pardiso}{{\tt PARDISO}}
+\newcommand{\filter}{{\tt FILTER}}
+\newcommand{\lancelot}{{\tt LANCELOT}}
+\newcommand{\loqo}{{\tt LOQO}}
+\newcommand{\minos}{{\tt MINOS}}
+\newcommand{\snopt}{{\tt SNOPT}}
+\newcommand{\dir}{{\tt KNITRO-DIRECT}}
+\newcommand{\cg}{{\tt KNITRO-CG}}
+\newcommand{\act}{{\tt KNITRO-ACTIVE}}
+\newcommand{\squid}{{\tt SQuID}}
+\newcommand{\mosek}{{\tt MOSEK}}
+\newcommand{\slqp}{S$\ell_1$QP }
+
+
+% Set begin...end commands
+\newcommand{\back}{\begin{acknowledgements}} \newcommand{\eack}{\end{acknowledgements}}
+\newcommand{\balg}{\begin{algorithm}}    \newcommand{\ealg}{\end{algorithm}}
+\newcommand{\balc}{\begin{algorithmic}}  \newcommand{\ealc}{\end{algorithmic}}
+\newcommand{\bali}{\begin{aligned}}      \newcommand{\eali}{\end{aligned}}
+\newcommand{\barr}{\begin{array}}        \newcommand{\earr}{\end{array}}
+\newcommand{\bass}{\begin{assumption}}   \newcommand{\eass}{\end{assumption}}
+\newcommand{\bbma}{\begin{bmatrix}}      \newcommand{\ebma}{\end{bmatrix}}
+\newcommand{\bcas}{\begin{cases}}        \newcommand{\ecas}{\end{cases}}
+\newcommand{\bcen}{\begin{center}}       \newcommand{\ecen}{\end{center}}
+\newcommand{\bcol}{\begin{column}}       \newcommand{\ecol}{\end{column}}
+\newcommand{\bcos}{\begin{columns}}      \newcommand{\ecos}{\end{columns}}
+\newcommand{\bcon}{\begin{condition}}    \newcommand{\econ}{\end{condition}}
+\newcommand{\bcor}{\begin{corollary}}    \newcommand{\ecor}{\end{corollary}}
+\newcommand{\bdfn}{\begin{definition}}   \newcommand{\edfn}{\end{definition}}
+\newcommand{\benu}{\begin{enumerate}}    \newcommand{\eenu}{\end{enumerate}}
+\newcommand{\bequ}{\begin{equation}}     \newcommand{\eequ}{\end{equation}}
+\newcommand{\benn}{\begin{equation*}}    \newcommand{\eenn}{\end{equation*}}
+\newcommand{\bexa}{\begin{example}}      \newcommand{\eexa}{\end{example}}
+\newcommand{\bfig}{\begin{figure}}       \newcommand{\efig}{\end{figure}}
+\newcommand{\bfra}{\begin{frame}}        \newcommand{\efra}{\end{frame}}
+\newcommand{\bite}{\begin{itemize}}      \newcommand{\eite}{\end{itemize}}
+\newcommand{\blem}{\begin{lemma}}        \newcommand{\elem}{\end{lemma}}
+\newcommand{\bmat}{\begin{matrix}}       \newcommand{\emat}{\end{matrix}}
+\newcommand{\bpma}{\begin{pmatrix}}      \newcommand{\epma}{\end{pmatrix}}
+\newcommand{\bpic}{\begin{picture}}      \newcommand{\epic}{\end{picture}}
+\newcommand{\bpro}{\begin{proof}}        \newcommand{\epro}{\end{proof}}
+\newcommand{\bprp}{\begin{proposition}}  \newcommand{\eprp}{\end{proposition}}
+\newcommand{\brem}{\begin{remark}}       \newcommand{\erem}{\end{remark}}
+\newcommand{\bsub}{\begin{subequations}} \newcommand{\esub}{\end{subequations}}
+\newcommand{\btab}{\begin{table}}        \newcommand{\etab}{\end{table}}
+\newcommand{\btar}{\begin{tabular}}      \newcommand{\etar}{\end{tabular}}
+\newcommand{\bthe}{\begin{theorem}}      \newcommand{\ethe}{\end{theorem}}
+\newcommand{\bvma}{\begin{vmatrix}}      \newcommand{\evma}{\end{vmatrix}}
+\newcommand{\lsc}{\emph{lsc}\ }
+\newcommand{\Min}{\text{minimize}}
+\newcommand{\ST}{\text{subject to}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bequation}{\begin{equation}}
+\newcommand{\eequation}{\end{equation}}
+\newcommand{\bproof}{\begin{proof}}
+\newcommand{\eproof}{\end{proof}}
+\newcommand{\benumerate}{\begin{enumerate}}   \newcommand{\eenumerate}{\end{enumerate}}
+\newcommand{\bitem}{\begin{itemize}}
+\newcommand{\eitem}{\end{itemize}}
+\newcommand{\bassumption}{\begin{assumption}}
+\newcommand{\eassumption}{\end{assumption}}
+\newcommand{\bprop}{\begin{proposition}}
+\newcommand{\eprop}{\end{proposition}}
+\newcommand{\bal}{\begin{aligned}}
+\newcommand{\eal}{\end{aligned}}
+\newcommand{\baligned}{\begin{aligned}}
+\newcommand{\ealigned}{\end{aligned}}
+\newcommand{\bseq}{\begin{subequations}}
+\newcommand{\eseq}{\end{subequations}}
+\newcommand{\bsubequations}{\begin{subequations}}
+\newcommand{\esubequations}{\end{subequations}}
+\newcommand{\bcases}{\begin{cases}}
+\newcommand{\ecases}{\end{cases}}
+\newcommand{\bbmatrix}     {\begin{bmatrix}}
+\newcommand{\ebmatrix}     {\end{bmatrix}}
+\newcommand{\btheorem}{\begin{theorem}}
+\newcommand{\etheorem}{\end{theorem}}
+
+
+
+
+
+% Convex analysis
+\newcommand{\indicator}[2]{\delta\left(#1\,\left|\, #2\right.\right)}
+
+% bar and tilde variables
+\newcommand{\ol}{\overline}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\newcommand{\Lim}{\lim\limits}
+\newcommand{\tand}{\text{and}}
+
+
+\newcommand{\ra}{\rangle}
+\newcommand{\la}{\langle}
+\newcommand{\shot}{\textbullet}
+\newcommand{\diag}{\text{diag}}
+\newcommand{\Null}{\text{null}}
+
+
+% Set text colors
+\newcommand{\tblue}  [1]{\textcolor{blue}  {#1}}
+\newcommand{\tgreen} [1]{\textcolor{green} {#1}}
+\newcommand{\tred}   [1]{\textcolor{red}   {#1}}
+\newcommand{\tyellow}[1]{\textcolor{yellow}{#1}}
+\definecolor{magenta}{rgb}{1,0,.6}
+\newcommand{\tmagenta}[1]{\textcolor{magenta}{#1}}
+\newcommand{\green}{\color{green}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\red}{\color{red}}
+\newcommand{\magenta}{\color{magenta}}
+
+
+
+
+% Set calligraphic letters
+\newcommand{\Acal}{{\cal A}}
+\newcommand{\Bcal}{{\cal B}}
+\newcommand{\Ccal}{{\cal C}}
+\newcommand{\Dcal}{{\cal D}}
+\newcommand{\Ecal}{{\cal E}}
+\newcommand{\Fcal}{{\cal F}}
+\newcommand{\Gcal}{{\cal G}}
+\newcommand{\Hcal}{{\cal H}}
+\newcommand{\Ical}{{\cal I}}
+\newcommand{\Jcal}{{\cal J}}
+\newcommand{\Kcal}{{\cal K}}
+\newcommand{\Lcal}{{\cal L}}
+\newcommand{\Mcal}{{\cal M}}
+\newcommand{\Ncal}{{\cal N}}
+\newcommand{\Ocal}{{\cal O}}
+\newcommand{\Pcal}{{\cal P}}
+\newcommand{\Qcal}{{\cal Q}}
+\newcommand{\Rcal}{{\cal R}}
+\newcommand{\Scal}{{\cal S}}
+\newcommand{\Tcal}{{\cal T}}
+\newcommand{\Ucal}{{\cal U}}
+\newcommand{\Vcal}{{\cal V}}
+\newcommand{\Wcal}{{\cal W}}
+\newcommand{\Xcal}{{\cal X}}
+\newcommand{\Ycal}{{\cal Y}}
+\newcommand{\Zcal}{{\cal Z}}
+
+
+% Set blackboard letters
+\newcommand{\Ab}{\mathbb{A}}
+\newcommand{\Bb}{\mathbb{B}}
+\newcommand{\Cb}{\mathbb{C}}
+\newcommand{\Db}{\mathbb{D}}
+\newcommand{\Eb}{\mathbb{E}}
+\newcommand{\Fb}{\mathbb{F}}
+\newcommand{\Gb}{\mathbb{G}}
+\newcommand{\Hb}{\mathbb{H}}
+\newcommand{\Ib}{\mathbb{I}}
+\newcommand{\Jb}{\mathbb{J}}
+\newcommand{\Kb}{\mathbb{K}}
+\newcommand{\Lb}{\mathbb{L}}
+\newcommand{\Mb}{\mathbb{M}}
+\newcommand{\Nb}{\mathbb{N}}
+\newcommand{\Ob}{\mathbb{O}}
+\newcommand{\Pb}{\mathbb{P}}
+\newcommand{\Qb}{\mathbb{Q}}
+\newcommand{\Rb}{\mathbb{R}}
+\newcommand{\Sb}{\mathbb{S}}
+\newcommand{\Tb}{\mathbb{T}}
+\newcommand{\Ub}{\mathbb{U}}
+\newcommand{\Vb}{\mathbb{V}}
+\newcommand{\Wb}{\mathbb{W}}
+\newcommand{\Xb}{\mathbb{X}}
+\newcommand{\Yb}{\mathbb{Y}}
+\newcommand{\Zb}{\mathbb{Z}}
+
+\newcommand{\bR}{\Rb}
+\newcommand{\Rn}{\Rb^n}
+\newcommand{\Rm}{\Rb^m}
+\newcommand{\Rmn}{\Rb^{m\times n}}
+\newcommand{\Rnn}{\Rb^{n\times n}}
+
+
+
+% Set bold letters
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\one}{\mathbf{1}}
+
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\abf}{\mathbf{a}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\Cbf}{\mathbf{C}}
+\newcommand{\cbf}{\mathbf{c}}
+\newcommand{\Dbf}{\mathbf{D}}
+\newcommand{\dbf}{\mathbf{d}}
+\newcommand{\Ebf}{\mathbf{E}}
+\newcommand{\ebf}{\mathbf{e}}
+\newcommand{\Fbf}{\mathbf{F}}
+\newcommand{\fbf}{\mathbf{f}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\gbf}{\mathbf{g}}
+\newcommand{\Hbf}{\mathbf{H}}
+\newcommand{\hbf}{\mathbf{h}}
+\newcommand{\Ibf}{\mathbf{I}}
+\newcommand{\ibf}{\mathbf{i}}
+\newcommand{\Jbf}{\mathbf{J}}
+\newcommand{\jbf}{\mathbf{j}}
+\newcommand{\Kbf}{\mathbf{K}}
+\newcommand{\kbf}{\mathbf{k}}
+\newcommand{\Lbf}{\mathbf{L}}
+\newcommand{\lbf}{\mathbf{l}}
+\newcommand{\Mbf}{\mathbf{M}}
+\newcommand{\mbf}{\mathbf{m}}
+\newcommand{\Nbf}{\mathbf{N}}
+\newcommand{\nbf}{\mathbf{n}}
+\newcommand{\Obf}{\mathbf{O}}
+\newcommand{\obf}{\mathbf{o}}
+\newcommand{\Pbf}{\mathbf{P}}
+\newcommand{\pbf}{\mathbf{p}}
+\newcommand{\Qbf}{\mathbf{Q}}
+\newcommand{\qbf}{\mathbf{q}}
+\newcommand{\Rbf}{\mathbf{R}}
+\newcommand{\rbf}{\mathbf{r}}
+\newcommand{\Sbf}{\mathbf{S}}
+\newcommand{\sbf}{\mathbf{s}}
+\newcommand{\Tbf}{\mathbf{T}}
+\newcommand{\tbf}{\mathbf{t}}
+\newcommand{\Ubf}{\mathbf{U}}
+\newcommand{\ubf}{\mathbf{u}}
+\newcommand{\Vbf}{\mathbf{V}}
+\newcommand{\vbf}{\mathbf{v}}
+\newcommand{\Wbf}{\mathbf{W}}
+\newcommand{\wbf}{\mathbf{w}}
+\newcommand{\Xbf}{\mathbf{X}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Ybf}{\mathbf{Y}}
+\newcommand{\ybf}{\mathbf{y}}
+\newcommand{\Zbf}{\mathbf{Z}}
+\newcommand{\zbf}{\mathbf{z}} 
+
+
+
+ \newcommand{\sigmabf}{\boldsymbol{\sigma}} 
+ \newcommand{\thetabf}{\boldsymbol{\theta}} 
+
+
+
+
+
+
+
+
+
+
+%
+%
+%\newcommand{\bH}{\mathbf{H}}
+%\newcommand{\bS}{\mathbf{S}}
+%
+%\newcommand{\bg}{\mathbf{g}}
+%\newcommand{\btheta}{\mathbf{\theta}}
+%\newcommand{\bt}{\mathbf{t}}
+%\newcommand{\bX}{\mathbf{X}}
+%\newcommand{\bx}{\mathbf{x}}
+%\newcommand{\bc}{\mathbf{c}}
+%\newcommand{\bp}{\mathbf{p}}
+%\newcommand{\bA}{\mathbf{A}}
+%\newcommand{\bQ}{\mathbf{Q}}
+%\newcommand{\bw}{\mathbf{w}}
+%\newcommand{\by}{\mathbf{y}}
+%\newcommand{\Ebb}{\mathbb{E}}
+%\newcommand{\Rbb}{\mathbb{R}}
+%\newcommand{\Pbb}{\mathbb{P}}
+%\newcommand{\bz}{\mathbf{z}}
+%\newcommand{\bB}{\mathbf{B}}
+%\newcommand{\bI}{\mathbf{I}}
+%\newcommand{\bW}{\mathbf{W}}
+%\newcommand{\bu}{\mathbf{u}}
+% Set numbering
+
+\numberwithin{algorithm}{section}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\numberwithin{theorem}{section}
+
+% Set language
+\usepackage[english]{babel}
+
+
+
+
+%% Set presentation mode
+%\mode<presentation>
+%{
+%  % Set theme
+% 
+% 
+% 
+%\usetheme{Madrid}
+%%\usecolortheme{beaver}
+%%% AnnArbor Antibes Bergen Berkeley beaver Berlin Boadilla boxes CambridgeUS Copenhagen Darmstadt default Dresden
+%%% Frankfurt Goettingen Hannover Ilmenau JuanLesPins Luebeck Madrid Malmoe Marburg Montpellier PaloAlto
+%%% Pittsburgh Rochester Singapore Szeged Warsaw
+%%% To see the combination matrix, go to: http://www.hartwork.org/beamer-theme-matrix/
+%  % Set transparent mode
+%  \setbeamercovered{transparent}
+%}
+
+
+
+
+
+
+% Set table of contents mode
+\AtBeginSection[]
+{
+  % Set table of contents slide
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+
+
+
+
+
+
+
+
+% Remove navigation
+\setbeamertemplate{navigation symbols}{} 
+
+\setbeamertemplate{footline}[frame number]
+
+
+\newcommand{\bcls}{\begin{columns}}
+\newcommand{\bcl}[1]{\begin{column}{#1\textwidth}}
+\newcommand{\ecls}{\end{columns}}
+\newcommand{\ecl}{\end{column}}
+\newcommand{\blt}{$\bullet$}
+\newcommand{\cfig}[2]{\centerline{\includegraphics[scale=#1]{#2}}}
+\newcommand{\fig}[2]{\includegraphics[scale=#1]{#2}}
+
+\newcommand{\bicl}[2]{\begin{columns}\begin{column}{0.5\textwidth} #1 \end{column}\begin{column}{0.5\textwidth} #2 \end{column}\end{columns}}
+
+
+ \usefonttheme[onlymath]{serif}
+ \expandafter\def\expandafter\insertshorttitle\expandafter{%  
+    \insertshorttitle\hfill%  
+    \insertframenumber\,/\,\inserttotalframenumber}  
