@@ -5,11 +5,11 @@
 
 \usepackage{pifont }
 \expandafter\def\expandafter\insertshorttitle\expandafter{%  
-    \insertshorttitle\hfill%  
-    \insertframenumber\,/\,\inserttotalframenumber}  
+				\insertshorttitle\hfill%  
+				\insertframenumber\,/\,\inserttotalframenumber}  
 \usepackage{pgfplots}
 \usepackage{tikz}
- 
+	
 % Set style
 \input{./style_for_slides.tex}
 %\input{C:/Users/haw309/Dropbox/textstyle1/style_for_slides.tex}
@@ -32,14 +32,14 @@
 %\newcommand{\sdist}[2]{\mathrm{dist}_2^2\left(#1\,\left|\, #2\right.\right)}
 
 \newcommand{\Jhat}{{\skew6\hat J}}
- 
+	
 \newcommand{\sd}{{\partial}}
 
 
- \usepackage{savesym}
+	\usepackage{savesym}
 \savesymbol{checkmark}
-  \usepackage{pifont,dingbat,halloweenmath}
- 
+		\usepackage{pifont,dingbat,halloweenmath}
+	
 \newcommand{\Pri}{P_{C_i}}
 %\newcommand{\pri}{p_i}
 %\newcommand{\qri}{q_i}
@@ -51,11 +51,10 @@
 % Headings
 %**************
 % Set title
-\title{AN INEXACT FIRST-ORDER METHOD FOR CONSTRAINED NONLINEAR OPTIMIZATION
-}
+\title{An Inexact First-order Method for Constrained Nonlinear Optimization}
 
 % Set author(s)
-\author[Rong, Zhou]{}
+\author[Yuyang Rong]{}
 
 % Set institute(s)
 \institute[ShanghaiTech]{}
@@ -71,32 +70,32 @@
 
 % Title page
 \begin{frame}
-  \titlepage
-  
-  \vspace{-4em}
-  \begin{table}
- \begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c}
-      & \bf    Yuyang Rong &
-   \\         &    ShanghaiTech University, China    & 
-   \\   & rongyy@shanghaitech.edu.cn
-   \\  &  &  
-   \\  &  & 
-  \end{tabular}
-  
-    \begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c}
- \bf  Hao Wang  & \bf    Jiashan Wang &\bf Hudie Zhou
-   \\      ShanghaiTech University   &     University of Washington    & ShanghaiTech University
- \end{tabular}
- 
- \vspace{6em}
- 2018, US
- \end{table}
+		\titlepage
+		
+		\vspace{-4em}
+		\begin{table}
+	\begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c}
+						& \bf    Yuyang Rong &
+			\\         &    ShanghaiTech University, China    & 
+			\\   & rongyy@shanghaitech.edu.cn
+			\\  &  &  
+			\\  &  & 
+		\end{tabular}
+		
+				\begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c}
+	\bf  Hao Wang  & \bf    Jiashan Wang &\bf Hudie Zhou
+			\\      ShanghaiTech University   &     University of Washington    & ShanghaiTech University
+	\end{tabular}
+	
+	\vspace{6em}
+	2018, US
+	\end{table}
 
 \end{frame}
 
 % Table of contents
 \begin{frame}{Outline}
-  \tableofcontents
+		\tableofcontents
 \end{frame}
 %**************
 
@@ -106,629 +105,385 @@
 
 \section[Introduction]{Introduction}
 
-\begin{frame}[c]{Introduction}
-\vfill
-\begin{itemize}
-\item   Nonlinear Programming
-\[
-\begin{array}{ll}
-\mbox{minimize}&f(x)\\ 
-\mbox{subject to}&c_i(x)= 0 ,  \quad i\in\Ecal\\
-& c_i(x) \le 0, \quad i\in \Ical
-\end{array}
-\] 
-\item In the  penalty (merit) function 
-$$\begin{aligned} \phi(x;\rho)  &= {\color{blue} \rho } f(x)+v(x) \\
-v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
-v_i(z) & =   \left| z \right|,\  i\in\Ecal\quad\text{and}\quad v_i(z) &=  (z)_+,\  i\in\Ical \}
-\end{aligned}$$
- \item SLP solves a sequence of LP subproblems to get steps
- \item Penalty-SLP uses penalty (merit) function to select stepsize
- \begin{equation}
-\begin{aligned} 
-l(d; \rho, x^k) & := \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)\\
-% \tag{\mbox{$\mathscr{P}$}}
-   d^k & := \arg\min_{d \in X}\ l(d; \rho_k, x^k)\ \ \text{for some}\ \ \rho_k \in (0,\rho_{k-1}] \\
-% \tag{\mbox{$\mathscr{D}$}}
-   \max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho, x^k) & :=  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
-\end{aligned}
-\end{equation}
-\item How to update this $\rho$ at every iteration? 
-\end{itemize}
-\end{frame}
+	\begin{frame}[c]{Introduction}
+		\vfill
+		\begin{itemize}
+		\item   Nonlinear Programming
+		\[
+		\begin{array}{ll}
+		\mbox{minimize}&f(x)\\ 
+		\mbox{subject to}&c_i(x)= 0 ,  \quad i\in\Ecal\\
+		& c_i(x) \le 0, \quad i\in \Ical
+		\end{array}
+		\] 
+		\item In the  penalty (merit) function 
+		$$\begin{aligned} \phi(x;\rho)  &= {\color{blue} \rho } f(x)+v(x) \\
+		v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
+		v_i(z) & =   \left| z \right|,\  i\in\Ecal\quad\text{and}\quad v_i(z) &=  (z)_+,\  i\in\Ical \}
+		\end{aligned}$$
+		\end{itemize}
+	\end{frame}
 
-
-  
+	\begin{frame}[c]{Introduction}
+		\vfill
+		\begin{itemize}
+			\item SLP solves a sequence of LP subproblems to get steps
+			\item Penalty-SLP uses penalty (merit) function to select stepsize
+			\begin{equation}
+		\begin{aligned} 
+		l(d; \rho, x^k) & := \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)\\
+		% \tag{\mbox{$\mathscr{P}$}}
+					d^k & := \arg\min_{d \in X}\ l(d; \rho_k, x^k)\ \ \text{for some}\ \ \rho_k \in (0,\rho_{k-1}] \\
+		% \tag{\mbox{$\mathscr{D}$}}
+					\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho, x^k) & :=  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
+		\end{aligned}
+		\end{equation}
+		\item How to update this $\rho$ at every iteration? 
+		\end{itemize}
+	\end{frame}
 
 
 
 \section[Novelties]{Novelties}
 
-\begin{frame}[c]{Novelty I: Inexact LP solves}
-
-\vfill 
-
-{\red  \leftpointright Proposed: } 
-Our proposed SLP technique is specifically designed to be effective in large-scale settings, allowing {\red inexactness} in the subproblem solves. 
-
-\vfill
-
-\begin{figure}[H]
-\includegraphics[scale=0.15]{pic/inexact}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}[c]{Novelty II: One inexact LP solve to update penalty parameter}
-
-\vfill
-
-{\blue \leftpointright Traditionally: }
-
-\vfill
-
-\begin{figure}[H]
-\includegraphics[scale=0.15]{pic/rhoupdate}
-\end{figure}
-
-\end{frame}
-
-
-
-
-\begin{frame}[c]{Novelty II: One inexact LP solve to update penalty parameter}
-
-\vfill
-
-{\red  \leftpointright Proposed: } 
-Dynamic penalty parameter updating strategy to be employed within the subproblem solve. Not having to accurately solve multiple LPs in a single iteration.
-
- 
-\vfill
-
-\begin{figure}[H]
-\includegraphics[scale=0.15]{pic/dynamicupdate}
-\end{figure}
-
-\end{frame}
-
-
-
-
-
-\begin{frame}[c]{Novelty III: Automatic Infeasibility Detection}
-
-\vfill
-
-{\blue 
-\leftpointright Traditional approach:}  Feasibility Restoration Phase
-
-\vfill
-
-\begin{figure}[H]
-\includegraphics[scale=0.15]{pic/feasibilityRes}
-\end{figure}
-
-\end{frame}
-
-
-\begin{frame}[c]{Novelty III: Automatic Infeasibility Detection}
-
-\vfill
-
-{\blue 
-\leftpointright Traditional approach:}  Feasibility Restoration Phase
-
-\vfill
-
-\begin{figure}[H]
-\includegraphics[scale=0.15]{pic/feasibilityRes2}
-\end{figure}
-
-\end{frame}
-
-
- 
-
-
-\begin{frame}[c]{Novelty III: Automatic Infeasibility Detection}
-
-\vfill
-
-{\red 
-\leftpointright Proposed:} Ensuring that each computed step predicts progress toward minimizing penalty function and constraint violation,   allowing for rapid {\red infeasibility detection.}
-
-\vfill
-
- \begin{figure}[H]
-\includegraphics[scale=0.15]{pic/autoInf}
-\end{figure}
-
-\end{frame}
-
- 
-
- 
- 
-
-\begin{frame}{Background: Proposed updating strategy} 
-Dynamically update $\rho$ {\color{red} within} the LP solver
-\[
-\begin{array}{ll}
- \mbox{minimize}&  \rho \nabla f(x^k)^Td +e^T(r+s) +  e^Tt \\ \\
- \mbox{subject to}&  c_i(x^k) + \nabla c^i(x^k)^T d =  r_i - s_i ,  \quad i\in\Ecal\\
-          & c_i(x^k) + \nabla c^i(x^k)^T d \le t_i, \quad \qquad i\in \Ical\\
-          & -\delta e \le  d \le \delta e, \   (r,s,t) \ge 0
-\end{array}
-\]
-
-\vfill
-
-So that after solving LP, we have
-
-\smallskip
-
-\begin{itemize}
-\item {\color{red} A search direction $d$}
-\item {\color{red} An appropriate value of $\rho$}
-\end{itemize}
-
-\end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	\begin{frame}[c]{Novelty I: Inexact LP solves}
+		\vfill
+		{\red  \leftpointright Proposed: } 
+		Our proposed SLP technique is specifically designed to be effective in large-scale settings, allowing {\red inexactness} in the subproblem solves. 
+		\vfill
+	\end{frame}
+
+	\begin{frame}[c]{Novelty II: One inexact LP solve to update penalty parameter}
+		\vfill
+		{\red  \leftpointright Proposed: } 
+		Dynamic penalty parameter updating strategy to be employed within the subproblem solve. Not having to accurately solve multiple LPs in a single iteration.
+		\vfill
+		\begin{figure}[H]
+			\includegraphics[scale=0.15]{pic/dynamicupdate}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}[c]{Novelty III: Automatic Infeasibility Detection}
+		\vfill
+		{\red 
+		\leftpointright Proposed:} Ensuring that each computed step predicts progress toward minimizing penalty function and constraint violation,   allowing for rapid {\red infeasibility detection.}
+		\vfill
+		\begin{figure}[H]
+			\includegraphics[scale=0.15]{pic/autoInf}
+		\end{figure}
+	\end{frame}
+
+	
 \section{Proposed approach: a dynamic updating strategy}
 
-
-\begin{frame}{A dynamic updating strategy}
-Consider a LP solver for 
-\[
-l(d; \rho, x^k) = \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
-\]
-
-While solving the LP,
-\begin{enumerate}
-\item {\color{blue} When} to update $\rho$?
-\item {\color{blue} When} do you think $\rho$ is too large?
-\end{enumerate}
-
- \vfill
- 
- \begin{itemize}
-\item \underline{Feasibility LP }
-\[
-l(d; 0, x^k) = \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
-\]
-gives a descent direction $d$ for $v(x)$
-
-\vfill
-
-\item \underline{Optimality LP}
-\[
-l(d; \rho, x^k) = \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
-\]
-gives a descent direction $d$ for $\phi(x;\rho)$
-
-\vfill
-
-
-\item Sufficiently small $\rho$, a descent direction for {\red  both}
-\end{itemize}
-
-%we don't want rho to the end
-%we don't rho updated too aggressively 
-
-\end{frame}
-
-
-
- 
-
-
-\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
-\begin{itemize}
-\item Primal value of optimality LP: $l(d;\rho)$
-\item Dual value of optimality LP: 
-$$ p(\lambda; \rho, x^k) =  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
-$$
-
-\end{itemize}
-
-\vfill
-
-
-\begin{minipage}[c]{.6\textwidth}
-
-\begin{itemize} 
-\item Solving   optimality LP, duality gap 
-$$ 0\le l(d^{(j)}; \rho) - p(\lambda^{(j)}; \rho)   \to 0$$
- gap ratio
-$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l(d^{(j)};\rho)   }{l(d^{(0)}; \rho) - p (\lambda^{(j)};\rho)  } \to 1$$
- \item Similarly, solving  feasibility LP, gap ratio
-$$r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l(d^{(j)};0)   }{l(d^{(0)}; 0)- p(\lambda^{(j)};0)  }  \to 1 $$
-\end{itemize}
-
-\end{minipage}
-\begin{minipage}[c]{.35\textwidth}
-\begin{figure}[htbp]
-\centering
-\includegraphics[scale=0.25]{pic/primaldual}\\
-\end{figure}
-
-\end{minipage}
-
-\end{frame}
-
-
-
-
-
-
-\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
-
-\begin{itemize}
-\item   Choose tolerance $\omega>0$
-\item  As $j\to \infty$, still have 
-$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l (d^{(j)};\rho) + \omega  }{l(d^{(0)}; \rho) - p (u^{(j)};\rho) + \omega } \to 1 $$
-
-But not necessarily 
-\[
-   r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l (d^{(j)};0) + \omega}{l(d^{(0)}; 0)- p(w^{(j)};0) + \omega}  \to 1
-\]
-if $\rho$ is not chosen properly. 
-\end{itemize}
-\vfill 
-
-If 
-%\begin{equation}
-%\tag{OPT}
-%\label{red.penalty}
-\[ {\color{red} r^{(j)}_{opt}  \ge \beta_{opt}} \]
-% \end{equation}
-with $\beta_{opt} \in (0,1)$ holds, but  
-%\begin{equation}
-%\tag{FEA}
-%\label{red.fea} 
-\[ {\color{red} r^{(j)}_{fea} \ge \beta_{fea} } \]
-%\end{equation}
-with $\beta_{fea}    \in (0,\beta_{opt} )$ doesn't hold... then $\rho$ is large
-
-\vfill
-
-%Updating strategy:  
-%
-%$$
-%\begin{cases} \text{If OPT {\color{red}holds}, FEA {\color{red} doesn't hold}}  &  \text{update  } \rho_{(j+1)} \gets \rho_{(j)}/2 \\
-%\text{If OPT and FEA {\color{red}both hold}}  &  \text{terminate QP solver}
-%\end{cases} 
-%$$
-
-
-\end{frame}
-
-%
-%\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
-%
-% Why FEA and OPT?   After solving the QP, we have 
-%
-%
-%\begin{itemize}
-%\item {\color{red} A search direction $d$}
-%\item {\color{red} An appropriate value of $\rho$}
-%\end{itemize}
-%
-%\vfill
-%
-%so that 
-%\begin{align*}
-%\Delta J(d^k;x^k, \rho) & \ge \beta_{opt} \Delta J(d^*; x^k,\rho)\\
-%\Delta J (d^k; x^k, 0 )  & \ge \beta_{fea} \Delta J(d^*; x^k, 0 ) 
-%\end{align*}
-%
-%\vfill
-%
-%Then go to line search, just one QP is solved per iteration!
-%
-%\end{frame}
-%
-
-
-
-\begin{frame}{$\rho$ update: checking Complementarity}
-
-Define: 
-
-\[ \begin{aligned}
-\Ecal_+(d) & := \{  i\in \Ecal:  \langle a^i, d\rangle + b_i > 0\}\\
-\Ecal_-(d) & := \{ i\in\Ecal:  \langle a^i, d\rangle + b_i < 0\} \\
-\Ical_+(d) & := \{i \in\Ical: \langle a^i, d\rangle + b_i > 0\}
-\end{aligned}
-\]
-
-Observe: 
-
-\[ \chi(d,\lambda) = \sum_{i\in \Ecal_+\cup \Ical_+} (1-\lambda_i) |\langle a^i, d\rangle + b_i| + \sum_{i\in\Ecal_-} (1+\lambda_i) |\langle a^i, d\rangle + b_i|  \]
-
-By complementarity,    {\blue $\chi^{(j)}: =  \chi(d^{(j)},\lambda^{(j)}) \to 0$  as $j\to 0$ }
- 
- \vfill
- 
- 
- Require \[ \chi^{(j)} \le (1-\beta_c)^2 (v(x_k)+\omega), \]
- or equivalently
- {\red \[ r_c^{(j)}: =1- \sqrt{  \frac{ \chi^{(j)} }{v(x_k)+\omega} } \ge \beta_c \]}
- 
-\end{frame}
-
-
-
-
- 
-
-
-
-
-\begin{frame}{$\rho$ update:  DUST} 
-
-
-\underline{ A {\blue D}ynamic {\blue U}pdating {\blue ST}rategy (DUST):} 
-
-\vfill 
-
-
-
-Given $\rho_{(j)}$ and the $j$-th iterate $(d^{(j)}, \lambda^{(j)})$, perform the following:
-
-\begin{itemize}
-\item  If $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$ and $r_v^{(j)} \ge \beta_v$ hold, then terminate; 
-\item  else $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$, but $r_v^{(j)} \ge \beta_v$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}/2$
-\end{itemize}
-  
-  \vfill
- 
- 
-  {\blue 
-\leftpointright Intuition:}  
-
- \begin{itemize}
- \item Whenever optimality and complementarity are sufficiently improved,  tune  $\rho$ to guarantee improvement on feasibility 
- \item Shouldn't place too much emphasis on optimality and complementarity
- \end{itemize}
- 
-\end{frame}
-
-
-
-
-
-\begin{frame}{$\rho$ update:  PSST} 
-
-\underline{ A {\blue P}osterior {\blue S}ubproblem updating {\blue ST}rategy (PSST) }
-
-\vfill
-
-At the end of the LP solve, check whether 
-$${\color{blue}   \Delta l(d; x^k,\rho)  + \omega_k  \ge  \beta_l [\Delta l(d; x^k, 0) + \omega_k}] $$
-holds.  If not, reduce $\rho$ to make it satisfied, e.g., 
-
-\[ \rho_k \gets \frac{(1-\beta_l)( \Delta l(d; 0;x^k)+\omega_k) }{ \nabla f(x^k)^Td^k  } \]
- or smaller. 
-
-\vfill
-
-  {\blue 
-\leftpointright Intuition:}  Too much emphasis on feasibility?
-\end{frame}
-
-
-\begin{frame}{Parameter requirement}
-
-Require: 
-\vfill
-
-\begin{itemize}
-\item Tolerance should get tighter and tighter
-\[ \boxed{\omega_k \to 0 }\]
-\item Priority is on optimality 
-\[ \boxed{1> \beta_\phi  > \beta_v > 0}\]
-\item Complementarity should be satisfied roughly 
-\[\boxed{ \beta_c \in (0,1)}\]
-\item Shouldn't place too much emphasis on feasibility 
-\[\boxed{ \beta_\phi(1-\beta_v)   > \beta_l>0 }\]
-\end{itemize}
- \end{frame}
-
-
-
-
-
+	\begin{frame}{A dynamic updating strategy}
+		Consider a LP solver for 
+		\[
+		l(d; \rho, x^k) = \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
+		\]
+		While solving the LP,
+		\begin{enumerate}
+			\item {\color{blue} When} to update $\rho$?
+			\item {\color{blue} When} do you think $\rho$ is too large?
+		\end{enumerate}
+		\vfill
+		\begin{itemize}
+			\item \underline{Feasibility LP }
+			\[
+			l(d; 0, x^k) = \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
+			\]
+			gives a descent direction $d$ for $v(x)$
+			\vfill
+			\item \underline{Optimality LP}
+			\[
+			l(d; \rho, x^k) = \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)
+			\]
+			gives a descent direction $d$ for $\phi(x;\rho)$
+			\vfill
+			\item Sufficiently small $\rho$, a descent direction for {\red  both}
+		\end{itemize}
+		%we don't want rho to the end
+		%we don't rho updated too aggressively 
+	\end{frame}
+
+
+	\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
+		\begin{itemize}
+			\item Primal value of optimality LP: $l(d;\rho)$
+			\item Dual value of optimality LP: 
+				$$ p(\lambda; \rho, x^k) =  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda$$
+		\end{itemize}
+		\vfill
+		\begin{minipage}[c]{.6\textwidth}\begin{itemize} 
+			\item Solving   optimality LP, duality gap 
+				$$ 0\le l(d^{(j)}; \rho) - p(\lambda^{(j)}; \rho)   \to 0$$
+				gap ratio
+				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l(d^{(j)};\rho)   }{l(d^{(0)}; \rho) - p (\lambda^{(j)};\rho)  } \to 1$$
+			\item Similarly, solving  feasibility LP, gap ratio
+				$$r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l(d^{(j)};0)   }{l(d^{(0)}; 0)- p(\lambda^{(j)};0)  }  \to 1 $$
+		\end{itemize}\end{minipage}
+		
+		\begin{minipage}[c]{.35\textwidth}\begin{figure}[htbp]
+			\centering
+			\includegraphics[scale=0.25]{pic/primaldual}\\
+		\end{figure}\end{minipage}
+	\end{frame}
+
+
+
+	\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
+		\begin{itemize}
+			\item   Choose tolerance $\omega>0$
+			\item  As $j\to \infty$, still have 
+				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l (d^{(j)};\rho) + \omega  }{l(d^{(0)}; \rho) - p (u^{(j)};\rho) + \omega } \to 1 $$
+
+				But not necessarily 
+				\[
+					r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l (d^{(j)};0) + \omega}{l(d^{(0)}; 0)- p(w^{(j)};0) + \omega}  \to 1
+				\]
+				if $\rho$ is not chosen properly. 
+		\end{itemize}
+		\vfill 
+		If
+		%\begin{equation}
+		%\tag{OPT}
+		%\label{red.penalty}
+		\[ {\color{red} r^{(j)}_{opt}  \ge \beta_{opt}} \]
+		% \end{equation}
+		with $\beta_{opt} \in (0,1)$ holds, but  
+		%\begin{equation}
+		%\tag{FEA}
+		%\label{red.fea} 
+		\[ {\color{red} r^{(j)}_{fea} \ge \beta_{fea} } \]
+		%\end{equation}
+		with $\beta_{fea}    \in (0,\beta_{opt} )$ doesn't hold... then $\rho$ is large
+		\vfill
+		%Updating strategy:  
+		%
+		%$$
+		%\begin{cases} \text{If OPT {\color{red}holds}, FEA {\color{red} doesn't hold}}  &  \text{update  } \rho_{(j+1)} \gets \rho_{(j)}/2 \\
+		%\text{If OPT and FEA {\color{red}both hold}}  &  \text{terminate QP solver}
+		%\end{cases} 
+		%$$
+	\end{frame}
+
+	%
+	%\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
+	%
+	% Why FEA and OPT?   After solving the QP, we have 
+	%
+	%
+	%\begin{itemize}
+	%\item {\color{red} A search direction $d$}
+	%\item {\color{red} An appropriate value of $\rho$}
+	%\end{itemize}
+	%
+	%\vfill
+	%
+	%so that 
+	%\begin{align*}
+	%\Delta J(d^k;x^k, \rho) & \ge \beta_{opt} \Delta J(d^*; x^k,\rho)\\
+	%\Delta J (d^k; x^k, 0 )  & \ge \beta_{fea} \Delta J(d^*; x^k, 0 ) 
+	%\end{align*}
+	%
+	%\vfill
+	%
+	%Then go to line search, just one QP is solved per iteration!
+	%
+	%\end{frame}
+	%
+
+
+
+	\begin{frame}{$\rho$ update: checking Complementarity}
+		Define: 
+		\[ \begin{aligned}
+		\Ecal_+(d) & := \{  i\in \Ecal:  \langle a^i, d\rangle + b_i > 0\}\\
+		\Ecal_-(d) & := \{ i\in\Ecal:  \langle a^i, d\rangle + b_i < 0\} \\
+		\Ical_+(d) & := \{i \in\Ical: \langle a^i, d\rangle + b_i > 0\}
+		\end{aligned}
+		\]
+
+		Observe: 
+		\[ \chi(d,\lambda) = \sum_{i\in \Ecal_+\cup \Ical_+} (1-\lambda_i) |\langle a^i, d\rangle + b_i| + \sum_{i\in\Ecal_-} (1+\lambda_i) |\langle a^i, d\rangle + b_i|  \]
+
+		By complementarity,    {\blue $\chi^{(j)}: =  \chi(d^{(j)},\lambda^{(j)}) \to 0$  as $j\to 0$ }
+		\vfill
+		Require \[ \chi^{(j)} \le (1-\beta_c)^2 (v(x_k)+\omega), \] or equivalently
+		{\red \[ r_c^{(j)}: =1- \sqrt{  \frac{ \chi^{(j)} }{v(x_k)+\omega} } \ge \beta_c \]}
+	\end{frame}
+
+
+	\begin{frame}{$\rho$ update:  DUST} 
+		\underline{ A {\blue D}ynamic {\blue U}pdating {\blue ST}rategy (DUST):} 
+		\vfill 
+		Given $\rho_{(j)}$ and the $j$-th iterate $(d^{(j)}, \lambda^{(j)})$, perform the following:
+		\begin{itemize}
+			\item  If $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$ and $r_v^{(j)} \ge \beta_v$ hold, then terminate; 
+			\item  else $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$, but $r_v^{(j)} \ge \beta_v$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}/2$
+		\end{itemize}
+		\vfill
+		{\blue \leftpointright Intuition:}  
+		\begin{itemize}
+			\item Whenever optimality and complementarity are sufficiently improved,  tune  $\rho$ to guarantee improvement on feasibility 
+			\item Shouldn't place too much emphasis on optimality and complementarity
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{$\rho$ update:  PSST} 
+		\underline{ A {\blue P}osterior {\blue S}ubproblem updating {\blue ST}rategy (PSST) }
+		\vfill
+		At the end of the LP solve, check whether 
+		$${\color{blue}   \Delta l(d; x^k,\rho)  + \omega_k  \ge  \beta_l [\Delta l(d; x^k, 0) + \omega_k}] $$
+		holds.  If not, reduce $\rho$ to make it satisfied, e.g., 
+		\[ \rho_k \gets \frac{(1-\beta_l)( \Delta l(d; 0;x^k)+\omega_k) }{ \nabla f(x^k)^Td^k  } \]
+			or smaller. 
+
+		\vfill
+		{\blue 	\leftpointright Intuition:}  Too much emphasis on feasibility?
+	\end{frame}
+
+
+	\begin{frame}{Parameter requirement}
+		Require: 
+		\vfill
+		\begin{itemize}
+			\item Tolerance should get tighter and tighter
+				\[ \boxed{\omega_k \to 0 }\]
+			\item Priority is on optimality 
+				\[ \boxed{1> \beta_\phi  > \beta_v > 0}\]
+			\item Complementarity should be satisfied roughly 
+				\[\boxed{ \beta_c \in (0,1)}\]
+			\item Shouldn't place too much emphasis on feasibility 
+				\[\boxed{ \beta_\phi(1-\beta_v)   > \beta_l>0 }\]
+		\end{itemize}
+	\end{frame}
 
 \section[Convergence Analysis]{Convergence Analysis}
 
+	\begin{frame}{Finite updates per subproblem}
+
+		\begin{assumption}[Subproblem Assumption]\label{ass.algorithm}
+		Functions $f$ and $c_i$ for all $i \in \Ecal\cup\Ical$, and their first- and second-order  derivatives, are all  bounded in an open convex set containing $\{x^k\}$ and $\{x^k+d^k\}$, i.e., there exists a constant  $\kappa_1>0$  such that  for any $x$ in this set, 
+		\[  \rho_0\|\nabla^2f(x)\|_2 \le \kappa_1\ \text{  and  }\  \|\nabla^2c_i(x)\|_2 \} \le \kappa_1, i\in\Ecal\cup\Ical.\] 
+		Defining the index set 
+		\[ \mathcal{U} := \{k \in \mathbb{N} : \mathcal{R}^k\ne\emptyset \} . \]
+		Moreover, for every $k\in\mathcal{U}$, let $j_k$ be the subproblem iteration number corresponding to the value of the smallest ratio $r_v$, i.e.,
+		\[   r_v^{(j_k)} \le r_v^{(i_k)} \quad \text{for any }\  i_k\in\mathcal{R}^k.\]
+		Also, defining the index set 
+		\[  \mathcal{T} := \{ k \in\mathbb{N}: \rho_k \  \text{is reduced by}\ \eqref{psst} \}. \]
+		From these definitions, it follows that $\rho_k < \rho_{k-1}$ if and only if $k\in\mathcal{U}\cup\mathcal{T}$.
+		\end{assumption}
+
+		\vfill
+
+		\begin{theorem}
+		Given $\nabla f(x^k), \rho_k$ and set $C$.  Consider a QP solver such that the Subproblem Assumption  is satisfied.   There exists $\rho_*>0$ such that for any $\rho\in(0,\rho_*)$,  if the algorithm is employed, then the update strategy is never triggered. 
+		\end{theorem}
+	\end{frame}
 
 
 
-\begin{frame}{Finite updates per subproblem}
+	\begin{frame}{Convergence of SLP}
+		\bassumption
+				There exist a compact convex set $X \subset \mathbb{R}^n$ with $0 \in \interior{X}$ and positive scalar constants $\underline\Lambda_0$, $\overline\Lambda_0$, $\underline\Lambda_\rho$, $\overline\Lambda_\rho$, and $K_0$ such that the following hold true.
+				\benumerate
+						\item[(i)] $f$ and $c_i$ for all $i \in \{1,\dots,m\}$, and their first- and second-order derivatives, are all  bounded in an open convex set containing $\{x^k\}$ and $\{x^k+d^k\}$.
+						\item[(ii)] Positive definiteness of the (approximate) Hessians. There exist constants $\overline\Lambda \ge \underline\Lambda > 0$ such that for all $k\in\mathbb{N}$ and  any $\rho\in[0, \rho_0]$,  
+						\[ 0< \underline\Lambda \le \underline\lambda_{0,k} \leq \overline\lambda_{0,k} \leq \overline\Lambda\quad \text{and}\quad 0 < \underline\Lambda \leq \underline\lambda_{\rho,k} \leq \overline\lambda_{\rho,k} \le \overline\Lambda.\]
+						\item[(iii)] Uniform boundedness of the derivatives. 
+				\eenumerate
+		\eassumption
 
-\begin{assumption}[Subproblem Assumption]\label{ass.algorithm}
-Functions $f$ and $c_i$ for all $i \in \Ecal\cup\Ical$, and their first- and second-order  derivatives, are all  bounded in an open convex set containing $\{x^k\}$ and $\{x^k+d^k\}$, i.e., there exists a constant  $\kappa_1>0$  such that  for any $x$ in this set, 
-\[  \rho_0\|\nabla^2f(x)\|_2 \le \kappa_1\ \text{  and  }\  \|\nabla^2c_i(x)\|_2 \} \le \kappa_1, i\in\Ecal\cup\Ical.\] 
-Defining the index set 
-\[ \mathcal{U} := \{k \in \mathbb{N} : \mathcal{R}^k\ne\emptyset \} . \]
-Moreover, for every $k\in\mathcal{U}$, let $j_k$ be the subproblem iteration number corresponding to the value of the smallest ratio $r_v$, i.e.,
-\[   r_v^{(j_k)} \le r_v^{(i_k)} \quad \text{for any }\  i_k\in\mathcal{R}^k.\]
-Also, defining the index set 
-\[  \mathcal{T} := \{ k \in\mathbb{N}: \rho_k \  \text{is reduced by}\ \eqref{psst} \}. \]
-From these definitions, it follows that $\rho_k < \rho_{k-1}$ if and only if $k\in\mathcal{U}\cup\mathcal{T}$.
-\end{assumption}
+		\vfill
 
-\vfill
+		\begin{theorem}  Suppose Assumption  holds. Then, one of the following occurs.
+		\begin{enumerate}
+		\item[(i)]  $\rho_k \to \rho_*$ for some constant $\rho_*>0$ and each limit point of $\{x^k\}$ either corresponds 
+		to a KKT point or an infeasible stationary point.
+		\item[(ii)] $\rho_k \to 0$ and all limit points of $\{x^k\}$ are infeasible stationary points.
+		\item[(iii)]  $\rho_k \to 0$, all limit points of $\{x^k\}$ are feasible, and the MFCQ fails to hold at all limit points 
+		where $\rho$ is updated. 
+			
+		\end{enumerate}
+			
+		\end{theorem}
 
-\begin{theorem}
-Given $\nabla f(x^k), \rho_k$ and set $C$.  Consider a QP solver such that the Subproblem Assumption  is satisfied.   There exists $\rho_*>0$ such that for any $\rho\in(0,\rho_*)$,  if the algorithm is employed, then the update strategy is never triggered. 
-\end{theorem}
-
-\end{frame}
-
-
-
-\begin{frame}{Convergence of SLP}
-\bassumption
-  There exist a compact convex set $X \subset \mathbb{R}^n$ with $0 \in \interior{X}$ and positive scalar constants $\underline\Lambda_0$, $\overline\Lambda_0$, $\underline\Lambda_\rho$, $\overline\Lambda_\rho$, and $K_0$ such that the following hold true.
-  \benumerate
-    \item[(i)] $f$ and $c_i$ for all $i \in \{1,\dots,m\}$, and their first- and second-order derivatives, are all  bounded in an open convex set containing $\{x^k\}$ and $\{x^k+d^k\}$.
-    \item[(ii)] Positive definiteness of the (approximate) Hessians. There exist constants $\overline\Lambda \ge \underline\Lambda > 0$ such that for all $k\in\mathbb{N}$ and  any $\rho\in[0, \rho_0]$,  
-    \[ 0< \underline\Lambda \le \underline\lambda_{0,k} \leq \overline\lambda_{0,k} \leq \overline\Lambda\quad \text{and}\quad 0 < \underline\Lambda \leq \underline\lambda_{\rho,k} \leq \overline\lambda_{\rho,k} \le \overline\Lambda.\]
-    \item[(iii)] Uniform boundedness of the derivatives. 
-  \eenumerate
-\eassumption
-
-\vfill
-
-\begin{theorem}  Suppose Assumption  holds. Then, one of the following occurs.
-\begin{enumerate}
-\item[(i)]  $\rho_k \to \rho_*$ for some constant $\rho_*>0$ and each limit point of $\{x^k\}$ either corresponds 
-to a KKT point or an infeasible stationary point.
-\item[(ii)] $\rho_k \to 0$ and all limit points of $\{x^k\}$ are infeasible stationary points.
-\item[(iii)]  $\rho_k \to 0$, all limit points of $\{x^k\}$ are feasible, and the MFCQ fails to hold at all limit points 
-where $\rho$ is updated. 
- 
-\end{enumerate}
- 
-\end{theorem}
-
-\end{frame}
-
-
-
-
-
-
- 
-
-
-
-
-
+	\end{frame}
 
 \section{Preliminary numerical results}
 
- 
-  
-\begin{frame}{Experimental settings}
+	
+			
+	\begin{frame}{Experimental settings}
+		\begin{itemize}
+			\item Test set:  126 CUTEr Hock-Schittkowski (\texttt{hs}) problems
+		\vfill
+			\item Subproblem algorithm: Primal Simplex
+		\vfill
+			\item Parameter selection:   
+				\begin{table}[H]
+				\centering
+				\caption{Parameters in FoNCO}
+				\label{tab.para}
+				\begin{tabular}{c|ccccccccc}\hline
+					Parameter  & $\rho_0$   &  $\beta_\alpha$  &  $\beta_v$& $\beta_\phi$ & $\beta_l$                  &  $\gamma_0$  &  $\theta_\gamma$   & $\theta_\alpha$    & $\delta_0$    \\ \hline 
+					Value   &   $1$    &  $10^{-4}     $  &  $0.3    $& $0.75$       & $0.135$ &     0.01     &  0.7   &   $0.5$  & 1  \\  \hline\hline
 
-\begin{itemize}
-\item Test set:  126 CUTEr Hock-Schittkowski (\texttt{hs}) problems
-\vfill
-\item Subproblem algorithm: Primal Simplex
-\vfill
-\item Parameter selection:   
-\begin{table}[H]
-\centering
-\caption{Parameters in FoNCO}
-\label{tab.para}
-\begin{tabular}{c|ccccccccc}\hline
- Parameter  & $\rho_0$   &  $\beta_\alpha$  &  $\beta_v$& $\beta_\phi$ & $\beta_l$                  &  $\gamma_0$  &  $\theta_\gamma$   & $\theta_\alpha$    & $\delta_0$    \\ \hline 
- Value   &   $1$    &  $10^{-4}     $  &  $0.3    $& $0.75$       & $0.135$ &     0.01     &  0.7   &   $0.5$  & 1  \\  \hline\hline
-
-Parameter &      $\bar\sigma$     &  $\underline{\sigma}$  &  $\delta_{\min} $  &    $\delta_{\max}$      & $\texttt{Iter}$ & $\texttt{Iter}^{ps}$  &  & & \\  \hline
- Value &           $0.3$  &   $0.75$  &  $64$       &   $10^{-4}$  &        $1024$   &  $100$ & & & \\  \hline
-\end{tabular}
-\end{table}
-\item Termination 
-\begin{equation}\label{relative.kkt}
-\begin{aligned}
-  & \epsilon_{kkt} := \frac{\max(E_{opt}(x^k, \lambda^k, \rho_k), E_c(x^k, \lambda^k))}{\max(1, E_{opt}(x^0, \lambda^0, \rho_0), E_c(x^0, \lambda^0))}\\
-  & \epsilon_{kkt} < 10^{-4} \\
-  & v(x^k) < 10^{-4}
-\end{aligned}\end{equation}
-
-\end{itemize}
-
-\end{frame}
+				Parameter &      $\bar\sigma$     &  $\underline{\sigma}$  &  $\delta_{\min} $  &    $\delta_{\max}$      & $\texttt{Iter}$ & $\texttt{Iter}^{ps}$  &  & & \\  \hline
+					Value &           $0.3$  &   $0.75$  &  $64$       &   $10^{-4}$  &        $1024$   &  $100$ & & & \\  \hline
+				\end{tabular}\end{table}
+		\vfill
+			\item Termination 
+				\begin{equation}\label{relative.kkt}\begin{aligned}
+					& \epsilon_{kkt} := \frac{\max(E_{opt}(x^k, \lambda^k, \rho_k), E_c(x^k, \lambda^k))}{\max(1, E_{opt}(x^0, \lambda^0, \rho_0), E_c(x^0, \lambda^0))}\\
+					& \epsilon_{kkt} < 10^{-4} \\
+					& v(x^k) < 10^{-4}
+				\end{aligned}\end{equation}
+		\end{itemize}
+	\end{frame}
 
 
-\begin{frame}{Numerical Results}
+	\begin{frame}{Numerical Results}
+		Observations: 
+		\vfill
+		\begin{itemize}
+			\item  Successfully solved $116$, success rate   $  = 113/126 \approx 90 \%$. 
+		\vfill
+			\item  We noticed that some problems are sensitive to the selection of trust region radius. For examples, problems HS87, HS93 HS101, HS102 and HS103 failed with initial trust region radius $1$. We re-ran those 5 problems with a smaller initial trust region radius $\delta_{0} = 10^{-4}$. All these 5 problems are solved successfully. We believe the robustness of our proposed algorithm could be improved with a more sophisticated trust region radius updating strategy. 
+		\vfill
+			\item Simplex method employed in our implementation is very efficient. For most of the problem, very few number of pivots is needed for each subproblem solve. 
+		%We notice that the size of the positive eigenvalues of these problems are around $10^{-4}$, so our modification significantly changed the structure of the Hessian preventing convergence within the iteration limit.
+		\end{itemize}
+	\end{frame}
 
+	\begin{frame}[c]{Numerical Results: Compare speed with SQP  }
+		\include{e-4plot}
+	\end{frame}
 
-Observations: 
-\vfill
-\begin{itemize}
-\item  
-Successfully solved $116$, success rate   $  = 113/126 \approx 90 \%$. 
-\vfill
-\item   
-We noticed that some problems
- are sensitive to the selection of trust region radius. For examples, problems HS87, HS93 HS101, HS102 and HS103 failed with initial trust region radius $1$. We re-ran those 5 problems with a smaller initial trust region radius $\delta_{0} = 10^{-4}$. All these 5 problems are solved successfully. We believe the robustness of our proposed algorithm could be improved with a more sophisticated trust region radius updating strategy. 
- \item Simplex method employed in our implementation is very efficient. For most of the problem, very few number of pivots is needed for each subproblem solve. 
-%We notice that the size of the positive eigenvalues of these problems are around $10^{-4}$, so our modification significantly changed the structure of the Hessian preventing convergence within the iteration limit.
-\end{itemize}
+	\begin{frame}[c]{Numerical Results:  Number of Pivot changes }
+		\begin{center}
+		\include{pivotHistogram} 
+		\end{center}
+	\end{frame}
 
+	\begin{frame}[c]{Numerical Results:  Number of Function Evaluations}
+		\begin{center}
+		\include{funcEvalHistogram} 
+		\end{center}
+	\end{frame}
+		
+	\begin{frame}[c]{ }
+		\centerline{\red Thank you!!}
+		\vspace{3em}
+		\centerline{\red  Contact me: rongyy@ShanghaiTech.edu.cn}
+		\vspace{3em}
+		%\centerline{\red Find my preprint paper: \underline  {  https://arxiv.org/abs/1803.09224}}
+		%\vspace{3em}
+		\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO-ps}}
+	\end{frame}
 
-
-\end{frame}
-
- 
-
-\begin{frame}[c]{Numerical Results: Compare speed with SQP  }
-
-\include{e-4plot}
-
-\end{frame}
-
- 
-
-
-\begin{frame}[c]{Numerical Results:  Number of Pivot changes }
-\begin{center}
-\include{pivotHistogram} 
-\end{center}
-\end{frame}
-
-
-\begin{frame}[c]{Numerical Results:  Number of Function Evaluations}
-\begin{center}
-\include{funcEvalHistogram} 
-\end{center}
-\end{frame}
- 
-
-
-
-\begin{frame}[c]{ }
-
-\centerline{\red Thank you!!}
-
-\vspace{3em}
-
-\centerline{\red  Contact me: rongyy@ShanghaiTech.edu.cn}
-
-\vspace{3em}
-
-
-%\centerline{\red Find my preprint paper: \underline  {  https://arxiv.org/abs/1803.09224}}
-
-%\vspace{3em}
-
-
-\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO-ps}}
-
-
-
-\end{frame}
-
- 
+	
 
 
 
@@ -805,7 +560,7 @@ We noticed that some problems
 %\end{frame}
 %
 %
- 
+	
 
 \end{document}
 
