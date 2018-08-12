@@ -119,7 +119,7 @@
 		\item In the  penalty (merit) function 
 		$$\begin{aligned} \phi(x;\rho)  &= {\color{blue} \rho } f(x)+v(x) \\
 		v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
-		v_i(z) & =   \left| z \right|,\  i\in\Ecal\quad\text{and}\quad v_i(z) &=  (z)_+,\  i\in\Ical \}
+		v_i(z) & =   \left| z \right|,\  i\in\Ecal\quad\text{and}\quad v_i(z) &=  (z)_+,\  i\in\Ical 
 		\end{aligned}$$
 		\end{itemize}
 	\end{frame}
@@ -214,7 +214,7 @@
 				$$ p(\lambda; \rho, x^k) =  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda$$
 		\end{itemize}
 		\vfill
-		\begin{minipage}[c]{.6\textwidth}\begin{itemize} 
+		\begin{minipage}[t]{.6\textwidth}\begin{itemize} 
 			\item Solving   optimality LP, duality gap 
 				$$ 0\le l(d^{(j)}; \rho) - p(\lambda^{(j)}; \rho)   \to 0$$
 				gap ratio
@@ -222,10 +222,10 @@
 			\item Similarly, solving  feasibility LP, gap ratio
 				$$r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l(d^{(j)};0)   }{l(d^{(0)}; 0)- p(\lambda^{(j)};0)  }  \to 1 $$
 		\end{itemize}\end{minipage}
-		
-		\begin{minipage}[c]{.35\textwidth}\begin{figure}[htbp]
+		\hfill
+		\begin{minipage}[t]{.35\textwidth}\begin{figure}[htbp]
 			\centering
-			\includegraphics[scale=0.25]{pic/primaldual}\\
+			\includegraphics[width=\textwidth]{pic/primaldual}\\
 		\end{figure}\end{minipage}
 	\end{frame}
 
