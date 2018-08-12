@@ -116,10 +116,12 @@
 		& c_i(x) \le 0, \quad i\in \Ical
 		\end{array}
 		\] 
-		\item In the  penalty (merit) function 
-		$$\begin{aligned} \phi(x;\rho)  &= {\color{blue} \rho } f(x)+v(x) \\
-		v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
-		v_i(z) & =   \left| z \right|,\  i\in\Ecal\quad\text{and}\quad v_i(z) &=  (z)_+,\  i\in\Ical 
+		\item Penalty (merit) function 
+		$$\begin{aligned} 
+			\phi(x;\rho)  &= \rho f(x)+v(x) \\
+			v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
+			v_i(z) & =  \left| z \right|, i\in\Ecal\quad\text{and}\quad 
+			v_i(z) = (z)_+, i\in\Ical 
 		\end{aligned}$$
 		\end{itemize}
 	\end{frame}
@@ -129,15 +131,13 @@
 		\begin{itemize}
 			\item SLP solves a sequence of LP subproblems to get steps
 			\item Penalty-SLP uses penalty (merit) function to select stepsize
-			\begin{equation}
-		\begin{aligned} 
-		l(d; \rho, x^k) & := \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)\\
-		% \tag{\mbox{$\mathscr{P}$}}
-					d^k & := \arg\min_{d \in X}\ l(d; \rho_k, x^k)\ \ \text{for some}\ \ \rho_k \in (0,\rho_{k-1}] \\
-		% \tag{\mbox{$\mathscr{D}$}}
-					\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho, x^k) & :=  -  \delta    \|\rho \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
-		\end{aligned}
-		\end{equation}
+		\begin{equation}\begin{aligned} 
+			l(d; \rho, x^k) & := \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)\\
+			% \tag{\mbox{$\mathscr{P}$}}
+			d^k & := \arg\min_{d \in X}\ l(d; \rho_k, x^k)\\
+			% \tag{\mbox{$\mathscr{D}$}}
+			\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho_k, x^k) & :=  -\delta \|\rho_k \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
+		\end{aligned}\end{equation}
 		\item How to update this $\rho$ at every iteration? 
 		\end{itemize}
 	\end{frame}
@@ -174,7 +174,7 @@
 	\end{frame}
 
 	
-\section{Proposed approach: a dynamic updating strategy}
+\section{Proposed approach}
 
 	\begin{frame}{A dynamic updating strategy}
 		Consider a LP solver for 
@@ -398,6 +398,8 @@
 		\vfill
 			\item Subproblem algorithm: Primal Simplex
 		\vfill
+			\item Our program: First-order methods for constrained optimization(FoNCO)
+		\vfill
 			\item Parameter selection:   
 				\begin{table}[H]
 				\centering
@@ -430,25 +432,24 @@
 			\item  We noticed that some problems are sensitive to the selection of trust region radius. For examples, problems HS87, HS93 HS101, HS102 and HS103 failed with initial trust region radius $1$. We re-ran those 5 problems with a smaller initial trust region radius $\delta_{0} = 10^{-4}$. All these 5 problems are solved successfully. We believe the robustness of our proposed algorithm could be improved with a more sophisticated trust region radius updating strategy. 
 		\vfill
 			\item Simplex method employed in our implementation is very efficient. For most of the problem, very few number of pivots is needed for each subproblem solve. 
-		%We notice that the size of the positive eigenvalues of these problems are around $10^{-4}$, so our modification significantly changed the structure of the Hessian preventing convergence within the iteration limit.
 		\end{itemize}
 	\end{frame}
 
-	\begin{frame}[c]{Numerical Results: Compare speed with SQP  }
-		\include{e-4plot}
-	\end{frame}
+%	\begin{frame}[c]{Numerical Results: Compare speed with SQP  }
+%		\include{e-4plot}
+%	\end{frame}
 
 	\begin{frame}[c]{Numerical Results:  Number of Pivot changes }
-		\begin{center}
-		\include{pivotHistogram} 
-		\end{center}
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{pic/pivot-per-iteration}
+		\end{figure}
 	\end{frame}
 
-	\begin{frame}[c]{Numerical Results:  Number of Function Evaluations}
-		\begin{center}
-		\include{funcEvalHistogram} 
-		\end{center}
-	\end{frame}
+%	\begin{frame}[c]{Numerical Results:  Number of Function Evaluations}
+%		\begin{center}
+%		\include{funcEvalHistogram} 
+%		\end{center}
+%	\end{frame}
 		
 	\begin{frame}[c]{ }
 		\centerline{\red Thank you!!}
@@ -459,85 +460,6 @@
 		%\vspace{3em}
 		\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO-ps}}
 	\end{frame}
-
-	
-
-
-
-%
-%
-%
-%\section{Huge scale setting}
-%
-%\begin{frame}{Huge scale setting}
-%\begin{itemize}
-%\item Our numerical experiment is a Limited-Memory BFGS (L-BFGS)
-%
-%\vfill
-%
-%\item The proposed updating strategy can maintain the structure of Hessian low-rank decomposition (separate approximation for two Hessians) : 
-%
-%\begin{eqnarray*}
-%H(x^k,\lambda^k,\rho_k)  &=&\sigma  I+\Psi \Sigma^{-1}\Psi^T,\\
-%H(x^k, \lambda^k, 0 ) &=&\gamma I+\Phi \Gamma^{-1}\Phi^T,
-%\end{eqnarray*}
-% \item  By Sherman Morrison formula
-% \begin{align*}
-%H_0^{-1}     & = \frac{1}{\gamma}\left[ I - \Phi(\gamma\Gamma+\Phi^T\Phi)^{-1}\Phi^T \right] \\
-%H_\rho_{-1}      & = \frac{1}{\sigma}\left[ I - \Psi(\sigma \Sigma + \Psi^T\Psi)^{-1} \Psi^T  \right] \\
-%H_{\rho,\mu}^{-1} & =  \frac{1}{\sigma+\frac{m}{\mu}}\left[ I - \Psi[(\sigma +\frac{m}{\mu})\Sigma + \Psi^T\Psi]^{-1} \Psi^T  \right].
-%\end{align*}
-%\end{itemize}
-%\end{frame}
-%
-%
-%
-%
-%
-%
-%
-%\begin{frame}{Huge scale setting}
-%
-%\begin{itemize}
-%\item After reducing $\rho$ to $\bar\rho$, the decomposition can be easily computed: 
-%\begin{align*}
-%H_{\bar \rho} & =  \bar\rho H_f + H_0 \\
-%& = \frac{\bar \rho}{\rho} ( H_0+\rho H_f) + (1-\frac{\bar\rho}{\rho}) H_0 \\
-%& =\tau H_\rho + (1-\tau) H_0\\
-%& = \bar\sigma I + \tau \Psi\Sigma^{-1}\Psi^T + (1-\tau) \Phi \Gamma^{-1} \Phi^T\\
-%& = H_\tau + (1-\tau)\Phi\Gamma^{-1}\Phi^T,
-%\end{align*}
-%\item  By Sherman Morrison formula
-%\begin{align*}
-%H_{\bar\rho}^{-1} & = H_{\bar\tau}^{-1} - H_{\tau}^{-1} \Phi \Theta_4^T H_{\tau}^{-1}\\
-%H_{\tau}        & = [\tau\sigma+(1-\tau)\gamma] I + \tau \Psi\Sigma^{-1}\Psi^T  
-%\end{align*}
-%\end{itemize}
-%
-%
-%\end{frame}
-%
-%
-%
-%\begin{frame}{Future work}
-%
-%\bite
-%\item Incorporate proposed updating strategy into a SQP framework
-%\item Prove ``uniform boundness" for SQP algorithm
-%\eite
-%
-%\end{frame}
-%
-%
-%
-%\begin{frame}
-%
-%\center{\Huge \color{red} \bf Thank you!}
-%
-%\end{frame}
-%
-%
-	
 
 \end{document}
 
