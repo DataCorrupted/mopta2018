@@ -159,7 +159,7 @@
 		Dynamic penalty parameter updating strategy to be employed within the subproblem solve. Not having to accurately solve multiple LPs in a single iteration.
 		\vfill
 		\begin{figure}[H]
-			\includegraphics[scale=0.15]{pic/dynamicupdate}
+			\includegraphics[height=0.8\textheight]{pic/dynamicupdate}
 		\end{figure}
 	\end{frame}
 
@@ -169,7 +169,7 @@
 		\leftpointright Proposed:} Ensuring that each computed step predicts progress toward minimizing penalty function and constraint violation,   allowing for rapid {\red infeasibility detection.}
 		\vfill
 		\begin{figure}[H]
-			\includegraphics[scale=0.15]{pic/autoInf}
+			\includegraphics[height=0.8\textheight]{pic/autoInf}
 		\end{figure}
 	\end{frame}
 
@@ -233,13 +233,13 @@
 
 	\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
 		\begin{itemize}
-			\item   Choose tolerance $\omega>0$
+			\item   Choose tolerance $\gamma>0$
 			\item  As $j\to \infty$, still have 
-				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l (d^{(j)};\rho) + \omega  }{l(d^{(0)}; \rho) - p (u^{(j)};\rho) + \omega } \to 1 $$
+				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l (d^{(j)};\rho) + \gamma  }{l(d^{(0)}; \rho) - p (u^{(j)};\rho) + \gamma } \to 1 $$
 
 				But not necessarily 
 				\[
-					r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l (d^{(j)};0) + \omega}{l(d^{(0)}; 0)- p(w^{(j)};0) + \omega}  \to 1
+					r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l (d^{(j)};0) + \gamma}{l(d^{(0)}; 0)- p(w^{(j)};0) + \gamma}  \to 1
 				\]
 				if $\rho$ is not chosen properly. 
 		\end{itemize}
@@ -305,22 +305,23 @@
 		\]
 
 		Observe: 
-		\[ \chi(d,\lambda) = \sum_{i\in \Ecal_+\cup \Ical_+} (1-\lambda_i) |\langle a^i, d\rangle + b_i| + \sum_{i\in\Ecal_-} (1+\lambda_i) |\langle a^i, d\rangle + b_i|  \]
+		\[ \chi(d,\lambda):= \sum_{i\in\Ecal_+(d)\cup\Ical_+(d)} (1- \lambda_i) v_i(\langle a^i, d\rangle + b_i)  + \sum_{i\in\Ecal_-(d)}( 1+\lambda_i)  v_i(\langle a^i, d\rangle + b_i) \]
 
 		By complementarity,    {\blue $\chi^{(j)}: =  \chi(d^{(j)},\lambda^{(j)}) \to 0$  as $j\to 0$ }
 		\vfill
-		Require \[ \chi^{(j)} \le (1-\beta_c)^2 (v(x_k)+\omega), \] or equivalently
-		{\red \[ r_c^{(j)}: =1- \sqrt{  \frac{ \chi^{(j)} }{v(x_k)+\omega} } \ge \beta_c \]}
+		Require \[ \chi^{(j)} \le (1-\beta_c)^2 l^{(0)}_ \gamma, \] or equivalently
+		{\red \[ r_c^{(j)}: =1- \sqrt{  \frac{ \chi^{(j)} }{l^{(0)}_ \gamma} } \ge \beta_c \]}
 	\end{frame}
 
 
 	\begin{frame}{$\rho$ update:  DUST} 
-		\underline{ A {\blue D}ynamic {\blue U}pdating {\blue ST}rategy (DUST):} 
+		\underline{ A {\blue D}ynamic {\blue U}pdating {\blue ST}rategy (DUST)}: 
 		\vfill 
 		Given $\rho_{(j)}$ and the $j$-th iterate $(d^{(j)}, \lambda^{(j)})$, perform the following:
 		\begin{itemize}
 			\item  If $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$ and $r_v^{(j)} \ge \beta_v$ hold, then terminate; 
-			\item  else $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$, but $r_v^{(j)} \ge \beta_v$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}/2$
+			\item  else if $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$, but $r_v^{(j)} \ge \beta_v$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}/2$
+			\item else set $\rho_{(j+1)} \gets \rho_{(j)}$.
 		\end{itemize}
 		\vfill
 		{\blue \leftpointright Intuition:}  
@@ -334,28 +335,13 @@
 		\underline{ A {\blue P}osterior {\blue S}ubproblem updating {\blue ST}rategy (PSST) }
 		\vfill
 		At the end of the LP solve, check whether 
-		$${\color{blue}   \Delta l(d; x^k,\rho)  + \omega_k  \ge  \beta_l [\Delta l(d; x^k, 0) + \omega_k}] $$
+		$${\color{blue}   \Delta l(d^k; \rho_k, x^k) +  \gamma_k \geq \beta_l (\Delta l(d^k; 0, x^k)+ \gamma_k) }$$
 		holds.  If not, reduce $\rho$ to make it satisfied, e.g., 
-		\[ \rho_k \gets \frac{(1-\beta_l)( \Delta l(d; 0;x^k)+\omega_k) }{ \nabla f(x^k)^Td^k  } \]
+		\[ \rho_k \gets \frac{(1-\beta_l)( \Delta l(d; 0;x^k)+\gamma_k) }{ \nabla f(x^k)^Td^k  } \]
 			or smaller. 
 
 		\vfill
-		{\blue 	\leftpointright Intuition:}  Too much emphasis on feasibility?
-	\end{frame}
-
-	\begin{frame}{Parameter requirement}
-		Require: 
-		\vfill
-		\begin{itemize}
-			\item Tolerance should get tighter and tighter
-				\[ \boxed{\omega_k \to 0 }\]
-			\item Priority is on optimality 
-				\[ \boxed{1> \beta_\phi  > \beta_v > 0}\]
-			\item Complementarity should be satisfied roughly 
-				\[\boxed{ \beta_c \in (0,1)}\]
-			\item Shouldn't place too much emphasis on feasibility 
-				\[\boxed{ \beta_\phi(1-\beta_v)   > \beta_l>0 }\]
-		\end{itemize}
+		{\blue 	\leftpointright Intuition:}  Near an infeasible stationary point?
 	\end{frame}
 
 \section[Convergence Analysis]{Convergence Analysis}
@@ -364,21 +350,15 @@
 		\begin{assumption}\label{ass.algorithm}
 			Functions $f$ and $c_i$ for all $i \in \Ecal\cup\Ical$, and their first- and second-order  derivatives, are all  bounded in an open convex set containing $\{x^k\}$ and $\{x^k+d^k\}$, i.e., there exists a constant  $\kappa_1>0$  such that  for any $x$ in this set, 
 			\[  \rho_0\|\nabla^2f(x)\|_2 \le \kappa_1\ \text{  and  }\  \|\nabla^2c_i(x)\|_2 \} \le \kappa_1, i\in\Ecal\cup\Ical.\] 
-			Defining the index set 
-			\[ \mathcal{U} := \{k \in \mathbb{N} : \mathcal{R}^k\ne\emptyset \} . \]
-			Moreover, for every $k\in\mathcal{U}$, let $j_k$ be the subproblem iteration number corresponding to the value of the smallest ratio $r_v$, i.e.,
-			\[   r_v^{(j_k)} \le r_v^{(i_k)} \quad \text{for any }\  i_k\in\mathcal{R}^k.\]
-			Also, defining the index set 
-			\[  \mathcal{T} := \{ k \in\mathbb{N}: \rho_k \  \text{is reduced by}\ PSST \}. \]
-			From these definitions, it follows that $\rho_k < \rho_{k-1}$ if and only if $k\in\mathcal{U}\cup\mathcal{T}$.
+		\end{assumption}
+		\vfill
+		\begin{assumption}
+			For all $j \in \mathbb{N}$, the sequence $\{(d^{(j)},\lambda^{(j)}), \nu^{(j)}\}$ has $d^{(j)} \in X$, $\lambda^{(j)}$ and $\nu^{(j)}$ are feasible for $\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho):= -  \delta\|\rho g+\sum_{i\in\Ecal\cup\Ical}\lambda_i a^i \|_* + b^T \lambda$,  and  $l(d^{(j)}; \rho_{(j)}) \leq l(0; \rho_{(j)}) $ and $p(\nu^{(j)}; 0) \geq p(\lambda^{(j)}; 0) \geq p(\lambda^{(0)}; 0) > - \infty$ hold.
 		\end{assumption}
 		\vfill
 	\end{frame}
 
 	\begin{frame}{Convergence of SLP}
-		\begin{assumption}
-			For all $j \in \mathbb{N}$, the sequence $\{(d^{(j)},\lambda^{(j)}), \nu^{(j)}\}$ has $d^{(j)} \in X$, $\lambda^{(j)}$ and $\nu^{(j)}$ are feasible for $\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho):= -  \delta\|\rho g+\sum_{i\in\Ecal\cup\Ical}\lambda_i a^i \|_* + b^T \lambda$,  and  $l(d^{(j)}; \rho_{(j)}) \leq l(0; \rho_{(j)}) $ and $p(\nu^{(j)}; 0) \geq p(\lambda^{(j)}; 0) \geq p(\lambda^{(0)}; 0) > - \infty$ hold.
-		\end{assumption}
 		\vfill
 		\begin{theorem}  Suppose Assumption1 and Assumption2 hold. Then, one of the following occurs.
 		\begin{enumerate}
@@ -388,9 +368,36 @@
 		\end{enumerate}\end{theorem}
 	\end{frame}
 
-\section{Preliminary numerical results}
 
+\section{Complexity}
+
+	\begin{frame}{Worst-case complexity for KKT residuals: $O(\frac{1}{\epsilon^2})$}
+	\begin{enumerate}
+		\item[(i)]  It requires at most 
+		\[ \max\Big\{\frac{ 4\kappa_0\kappa_1 [\varphi(x^0,\rho_0) - \varphi^* ]}{\delta \beta_\phi^2   \theta_\alpha \beta_\alpha (1-\beta_\alpha)} \mathbf{\frac{1}{\epsilon^2}},[\frac{2\eta(1-\beta_\phi)}{\delta\beta_\phi } \frac{1}{\epsilon} ]^{\frac{2}{\zeta}}\Big\} \] 
+		iterations to reach $\inf_{i=0}^k E_{opt}(x^i, \lambda^i,\rho_i)   \le \epsilon$.
+		\item[(ii)] It requires at most
+		  \[ \max\Big\{\frac{ 4 \delta \kappa_0\kappa_1 [\varphi(x^0,\rho_0) - \varphi^* ]}{ \beta_\phi^2   \theta_\alpha \beta_\alpha (1-\beta_\alpha)} \mathbf{\frac{1}{\epsilon^2}}, [\frac{2\eta(1-\beta_\phi)}{ \beta_\phi } \frac{1}{\epsilon}]^{\frac{2}{\zeta}}\Big\}  \] 
+		iterations to reach $\inf_{i=0}^k E_{c}(x^i, \lambda^i)   \le \epsilon$.
+		\item[(iii)]  It requires at most 
+		\[ \max\Big\{\frac{16 \kappa_0\kappa_1[\varphi(x^0,\rho_0) - \varphi^* ]}{\delta \theta_\alpha \beta_v^2  \beta_l \beta_\alpha(1-\beta_\alpha)} \mathbf{\frac{1}{\epsilon^2}}, \left[ \frac{2\eta(1-\beta_l)}{\delta \beta_v \beta_l \epsilon}\right]^{\frac{2}{\zeta}}, \left[\frac{2\eta(1-\beta_v)}{\delta\beta_v \epsilon} \right] ^{\frac{2}{\zeta}} \Big\}\] 
+		iterations to reach $\inf_{i=0}^k E_{fea}(x^i, \nu^i)   \le \epsilon$.
+		\item[(iv)]  It requires at most
+		\[ \max\Big\{\frac{16 \kappa_0\kappa_1[\varphi(x^0,\rho_0) - \varphi^* ]}{ \theta_\alpha \beta_\phi^2  \beta_l \beta_\alpha(1-\beta_\alpha)} \mathbf{\frac{1}{\epsilon^2}}, \left[ \frac{2\eta(1-\beta_l)}{ \beta_\phi \beta_l \epsilon}\right]^{\frac{2}{\zeta}},  \left[\frac{2\eta(1-\beta_v)}{ \beta_v\epsilon} \right] ^{\frac{2}{\zeta}} \Big\}\] 
+		iterations to reach $\inf_{i=0}^k E_{c}(x^i, \nu^i)  \le \epsilon$.
+	\end{enumerate}\end{frame}
 	
+	\begin{frame}{Local complexity of constraint violation: $O(\frac{1}{\epsilon^2})$}
+	\begin{enumerate}
+		\item[(i)]  
+			$ v(x_k) \le E_c(x^k; \lambda^k ) / \tau$
+		\vfill
+		\item[(ii)] It requires at most
+			\[ \max\Big\{ \frac{ 4 \delta \kappa_0\kappa_1 [\varphi(x^{\bar{k}},\rho_{\bar{k}}) - \varphi^* ]}{ \tau \beta_\phi^2   \theta_\alpha \beta_\alpha (1-\beta_\alpha)} \frac{1}{\epsilon^2}, \frac{1}{\tau}[\frac{2\eta(1-\beta_\phi)}{ \beta_\phi } \frac{1}{\epsilon}]^{\frac{2}{\zeta}} \Big\} \] 
+			to reach $\inf_{i = \bar{k}}^kv(x^i)\le \epsilon$ for given $\epsilon > 0$. 
+	\end{enumerate}\end{frame}
+
+\section{Preliminary numerical results}
 			
 	\begin{frame}{Experimental settings}
 		\begin{itemize}
