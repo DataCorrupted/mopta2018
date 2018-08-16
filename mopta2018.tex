@@ -339,7 +339,7 @@
 
 	\begin{frame}{Convergence of SLP}
 		\vfill
-		\begin{theorem}  Suppose Assumption1 and Assumption2 hold. Then, one of the following occurs.
+		\begin{theorem}  Suppose two and assumptions mentioned in previous page hold. Then, one of the following occurs.
 		\begin{enumerate}
 			\item[(i)]  $\rho_k \to \rho_*$ for some constant $\rho_*>0$ and each limit point of $\{x^k\}$ either corresponds to a KKT point or an infeasible stationary point.
 			\item[(ii)] $\rho_k \to 0$ and all limit points of $\{x^k\}$ are infeasible stationary points.
@@ -382,7 +382,7 @@
 		\vfill
 			\item First-order methods for constrained optimization(FoNCO)
 		\vfill
-			\item Primal Simplex(You can use anything you like)
+			\item Primal Simplex(You can use anything else)
 		\vfill
 			\begin{equation}\label{sub.primal.lp}
 			  \baligned
@@ -422,18 +422,17 @@
 				\caption{Parameters in FoNCO}
 				\label{tab.para}
 				\begin{tabular}{c|ccccccccc}\hline
-					Parameter  & $\rho_0$   &  $\beta_\alpha$  &  $\beta_v$& $\beta_\phi$ & $\beta_l$                  &  $\gamma_0$  &  $\theta_\gamma$   & $\theta_\alpha$    & $\delta_0$    \\ \hline 
+					Parameter  & $\rho_0$   &  $\beta_\alpha$  &  $\beta_{fea}$& $\beta_{opt}$ & $\beta_l$                  &  $\gamma_0$  &  $\theta_\gamma$   & $\theta_\alpha$    & $\delta_0$    \\ \hline 
 					Value   &   $1$    &  $10^{-4}     $  &  $0.3    $& $0.75$       & $0.135$ &     0.01     &  0.7   &   $0.5$  & 1  \\  \hline\hline
 
 				Parameter &      $\bar\sigma$     &  $\underline{\sigma}$  &  $\delta_{\min} $  &    $\delta_{\max}$      & $\texttt{Iter}$ & $\texttt{Iter}^{ps}$  &  & & \\  \hline
-					Value &           $0.3$  &   $0.75$  &  $64$       &   $10^{-4}$  &        $1024$   &  $100$ & & & \\  \hline
+					Value &           $0.3$  &   $0.75$  &  $10^{-4}$       &   $64$  &        $1024$   &  $100$ & & & \\  \hline
 				\end{tabular}\end{table}
 		\vfill
 			\item Termination 
 				\begin{equation}\label{relative.kkt}\begin{aligned}
-					& \epsilon_{kkt} := \frac{\max(E_{opt}(x^k, \lambda^k, \rho_k), E_c(x^k, \lambda^k))}{\max(1, E_{opt}(x^0, \lambda^0, \rho_0), E_c(x^0, \lambda^0))}\\
-					& \epsilon_{kkt} < 10^{-4} \\
-					& v(x^k) < 10^{-4}
+					& \epsilon < 10^{-4} \\
+					& v(x^k) < 10^{-4} \\
 				\end{aligned}\end{equation}
 		\end{itemize}
 	\end{frame}
@@ -451,30 +450,18 @@
 		\end{itemize}
 	\end{frame}
 
-%	\begin{frame}[c]{Numerical Results: Compare speed with SQP  }
-%		\include{e-4plot}
-%	\end{frame}
-
 	\begin{frame}[c]{Numerical Results:  Number of Pivot changes }
 		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{pic/pivot-per-iteration}
 		\end{figure}
 	\end{frame}
 
-%	\begin{frame}[c]{Numerical Results:  Number of Function Evaluations}
-%		\begin{center}
-%		\include{funcEvalHistogram} 
-%		\end{center}
-%	\end{frame}
-		
-	\begin{frame}[c]{ }
-		\centerline{\red Thank you!!}
-		\vspace{3em}
-		\centerline{\red  Contact me: rongyy@ShanghaiTech.edu.cn}
-		\vspace{3em}
-		%\centerline{\red Find my preprint paper: \underline  {  https://arxiv.org/abs/1803.09224}}
-		%\vspace{3em}
-		\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO}}
+	\begin{frame}[c]
+		\centerline{\large{ Thank you}}
+		\vfill
+		\centerline{\large{Contact: rongyy@ShanghaiTech.edu.cn}}
+		\vfill
+		\centerline{\large{ Code: https://github.com/DataCorrupted/FoNCO}}
 	\end{frame}
 
 \end{document}
