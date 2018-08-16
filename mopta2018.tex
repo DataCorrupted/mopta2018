@@ -88,7 +88,8 @@
 	\end{tabular}
 	
 	\vspace{6em}
-	2018, US
+	Lehigh University \\
+	MOPTA 2018
 	\end{table}
 
 \end{frame}
@@ -109,6 +110,7 @@
 		\vfill
 		\begin{itemize}
 		\item   Nonlinear Programming
+		\vfill
 		\[
 		\begin{array}{ll}
 		\mbox{minimize}&f(x)\\ 
@@ -116,21 +118,25 @@
 		& c_i(x) \le 0, \quad i\in \Ical
 		\end{array}
 		\] 
+		\vfill
 		\item Penalty (merit) function 
+		\vfill
 		$$\begin{aligned} 
 			\phi(x;\rho)  &= \rho f(x)+v(x) \\
 			v(x) &= \sum_{i\in\Ecal\cup\Ical} v_i(c_i(x)) \\
 			v_i(z) & =  \left| z \right|, i\in\Ecal\quad\text{and}\quad 
 			v_i(z) = (z)_+, i\in\Ical 
 		\end{aligned}$$
+		\vfill
 		\end{itemize}
 	\end{frame}
 
 	\begin{frame}[c]{Introduction}
-		\vfill
 		\begin{itemize}
-			\item SLP solves a sequence of LP subproblems to get steps
-			\item Penalty-SLP uses penalty (merit) function to select stepsize
+			\item Sequential Linear Programming(SLP) solves a sequence of LP subproblems to get steps
+			\vfill
+			\item Penalty-SLP uses penalty (merit) function to select step size
+			\vfill
 		\begin{equation}\begin{aligned} 
 			l(d; \rho, x^k) & := \rho \nabla f(x^k)^Td + \sum_{i\in\Ecal\cup\Ical} v_i( c_i(x^k) + \nabla c_i(x^k)^Td)\\
 			% \tag{\mbox{$\mathscr{P}$}}
@@ -138,6 +144,7 @@
 			% \tag{\mbox{$\mathscr{D}$}}
 			\max_{\lambda_{\Ecal} \in \mathbb{B}, \lambda_{\Ical}\in\mathbb{B}_+}\ p(\lambda; \rho_k, x^k) & :=  -\delta \|\rho_k \nabla f(x^k)+\sum_{i\in\Ecal\cup\Ical}\lambda_i \nabla c_i(x^k) \|_* + c(x^k)^T\lambda
 		\end{aligned}\end{equation}
+		\vfill
 		\item How to update this $\rho$ at every iteration? 
 		\end{itemize}
 	\end{frame}
@@ -218,14 +225,14 @@
 			\item Solving   optimality LP, duality gap 
 				$$ 0\le l(d^{(j)}; \rho) - p(\lambda^{(j)}; \rho)   \to 0$$
 				gap ratio
-				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l(d^{(j)};\rho)   }{l(d^{(0)}; \rho) - p (\lambda^{(j)};\rho)  } \to 1$$
+				$$r^{(j)}_{opt} := \frac{l(d^{(0)};\rho) - l(d^{(j)};\rho)   }{l(d^{(0)}; \rho) - p (u^{(j)};\rho)  } \to 1$$
 			\item Similarly, solving  feasibility LP, gap ratio
-				$$r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l(d^{(j)};0)   }{l(d^{(0)}; 0)- p(\lambda^{(j)};0)  }  \to 1 $$
+				$$r^{(j)}_{fea} := \frac{l(d^{(0)};0) - l(d^{(j)};0)   }{l(d^{(0)}; 0)- p(w^{(j)};0)  }  \to 1 $$
 		\end{itemize}\end{minipage}
 		\hfill
 		\begin{minipage}[t]{.35\textwidth}\begin{figure}[htbp]
 			\centering
-			\includegraphics[width=\textwidth]{pic/primaldual}\\
+			\includegraphics[width=\textwidth]{pic/primaldual.pdf}\\
 		\end{figure}\end{minipage}
 	\end{frame}
 
@@ -267,34 +274,6 @@
 		%$$
 	\end{frame}
 
-	%
-	%\begin{frame}{$\rho$ update: checking optimality v.s. feasibility}
-	%
-	% Why FEA and OPT?   After solving the QP, we have 
-	%
-	%
-	%\begin{itemize}
-	%\item {\color{red} A search direction $d$}
-	%\item {\color{red} An appropriate value of $\rho$}
-	%\end{itemize}
-	%
-	%\vfill
-	%
-	%so that 
-	%\begin{align*}
-	%\Delta J(d^k;x^k, \rho) & \ge \beta_{opt} \Delta J(d^*; x^k,\rho)\\
-	%\Delta J (d^k; x^k, 0 )  & \ge \beta_{fea} \Delta J(d^*; x^k, 0 ) 
-	%\end{align*}
-	%
-	%\vfill
-	%
-	%Then go to line search, just one QP is solved per iteration!
-	%
-	%\end{frame}
-	%
-
-
-
 	\begin{frame}{$\rho$ update: checking Complementarity}
 		Define: 
 		\[ \begin{aligned}
@@ -319,8 +298,8 @@
 		\vfill 
 		Given $\rho_{(j)}$ and the $j$-th iterate $(d^{(j)}, \lambda^{(j)})$, perform the following:
 		\begin{itemize}
-			\item  If $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$ and $r_v^{(j)} \ge \beta_v$ hold, then terminate; 
-			\item  else if $r_{\phi}^{(j)} \ge \beta_\phi$, $r_c^{(j)} \ge \beta_c$, but $r_v^{(j)} \ge \beta_v$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}/2$
+			\item  If $r_{{opt}}^{(j)} \ge \beta_{opt}$, $r_c^{(j)} \ge \beta_c$ and $r_{fea}^{(j)} \ge \beta_{fea}$ hold, then terminate; 
+			\item  else if $r_{{opt}}^{(j)} \ge \beta_{opt}$, $r_c^{(j)} \ge \beta_c$, but $r_{fea}^{(j)} \ge \beta_{fea}$ does not, then set $\rho_{(j+1)} \gets \rho_{(j)}\theta_\rho$
 			\item else set $\rho_{(j+1)} \gets \rho_{(j)}$.
 		\end{itemize}
 		\vfill
@@ -398,14 +377,44 @@
 	\end{enumerate}\end{frame}
 
 \section{Preliminary numerical results}
-			
+	
+	\begin{frame}{Algorithm \& Coding}\begin{itemize}
+		\vfill
+			\item First-order methods for constrained optimization(FoNCO)
+		\vfill
+			\item Primal Simplex(You can use anything you like)
+		\vfill
+			\begin{equation}\label{sub.primal.lp}
+			  \baligned
+				\min_{(d, r, s, t)} &\   \langle \rho g, d\rangle + \langle e, r+s\rangle + \langle e, t\rangle \ \\
+				 \st &\  \langle a_i, d\rangle + b_i = r_i-s_i, \ i\in\Ecal, \\   
+					  &\  \langle a_i, d\rangle + b_i \le t_i, \qquad\  i\in\Ical, \\   
+					  & -\delta e \le  d \le \delta e, \   (r,s,t) \ge 0.
+			  \ealigned
+			\end{equation}
+		\vfill
+			\begin{equation}\label{primal.standard}
+			  \baligned
+				& \min_{(d_+, d_-, r, s, t, z, u, v)} \   \langle \rho g,  d_+\rangle  - \langle \rho g,  d_-\rangle + \langle e, r\rangle + \langle e, s\rangle + \langle e, t\rangle \ \\
+				 \st & \begin{aligned}
+				 \begin{bmatrix}
+				 a_{\Ecal}^T & -a_{\Ecal}^T  &  - I_{\Ecal} & I_{\Ecal} & 0 & 0  & 0 & 0 \\
+				 a_{\Ical}^T  & -a_{\Ical}^T   &  0 & 0 & -I_{\Ical} & I_{\Ical} & 0 & 0 \\
+				 I_n & - I_n & 0 & 0 & 0 & 0 & I  & 0  \\
+				 -I_n& I_n & 0 & 0 & 0 & 0  &  0 & I 
+				 \end{bmatrix}   
+				 \begin{bmatrix} d_+ \\ d_- \\ r \\ s \\ t \\ z \\ u \\ v    \end{bmatrix} 
+				 &= \begin{bmatrix} -b_{\Ecal} \\ -b_{\Ical} \\  \delta e \\  \delta e  \end{bmatrix} \\  
+					( d_+, d_-, r, s, t, u, v, w)  & \ge 0,
+					  \end{aligned}
+			  \ealigned
+			\end{equation}
+		\vfill 
+			\item Trust Region + Line search
+	\end{itemize}\end{frame}
 	\begin{frame}{Experimental settings}
 		\begin{itemize}
 			\item Test set:  126 CUTEr Hock-Schittkowski (\texttt{hs}) problems
-		\vfill
-			\item Subproblem algorithm: Primal Simplex
-		\vfill
-			\item Our program: First-order methods for constrained optimization(FoNCO)
 		\vfill
 			\item Parameter selection:   
 				\begin{table}[H]
@@ -465,7 +474,7 @@
 		\vspace{3em}
 		%\centerline{\red Find my preprint paper: \underline  {  https://arxiv.org/abs/1803.09224}}
 		%\vspace{3em}
-		\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO-ps}}
+		\centerline{\red Find my code: \underline  {  https://github.com/DataCorrupted/FoNCO}}
 	\end{frame}
 
 \end{document}
